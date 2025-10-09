@@ -9,7 +9,7 @@ This project was created to showcase SSR pages, Zustand storage, dynamic navigat
 
 ## Demo
 
-Live demo is available at: TODO_REPLACE
+Live demo is available at: https://readers-ticket.vercel.app/
 
 ---
 
@@ -38,7 +38,7 @@ Live demo is available at: TODO_REPLACE
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/TODO_REPLACE/readers-ticket.git
+git clone https://github.com/quileute/readers-ticket.git
 cd readers-ticket
 
 # 2. Install dependencies
