@@ -1,0 +1,82 @@
+import { Plan } from "@/types";
+
+export const plans: Plan[] = [
+  {
+    id: "reader",
+    name: "Reader",
+    price: 9,
+    description: "For occasional readers who enjoy a few books per month.",
+    image:
+      "https://images.unsplash.com/photo-1613931411023-7b2c1c973425?auto=format&fit=crop&w=800&q=80",
+    features: [
+      { icon: "book-heart", text: "A gentle start into digital reading" },
+      { icon: "notebook-pen", text: "Keep notes and highlights together" },
+      { icon: "tent-tree", text: "Read anywhere, even offline" },
+    ],
+    includedFeatureIds: [
+      "basic-formats",
+      "users-2",
+      "cloud-1gb",
+      "offline",
+      "sync",
+      "bookmarks",
+    ],
+  },
+  {
+    id: "bookworm",
+    name: "Bookworm",
+    price: 19,
+    description: "Perfect for book lovers who can't stop reading.",
+    image:
+      "https://images.unsplash.com/photo-1741158672093-38fe55d84071?auto=format&fit=crop&w=800&q=80",
+    features: [
+      { icon: "book-open", text: "Shared library for the whole family" },
+      { icon: "book-image", text: "Comics, manga and illustrated tales" },
+      { icon: "headphones", text: "Audiobooks for travel or bedtime" },
+    ],
+    includedFeatureIds: [
+      "basic-formats",
+      "extended-formats",
+      "users-4",
+      "cloud-20gb",
+      "audiobooks",
+      "offline",
+      "sync",
+      "bookmarks",
+      "collections",
+      "translator",
+      "converter",
+    ],
+  },
+  {
+    id: "bibliophile",
+    name: "Bibliophile",
+    price: 29,
+    description: "Unlimited access for true book devotees.",
+    image:
+      "https://images.unsplash.com/photo-1754430543609-aae159c530ef?auto=format&fit=crop&w=800&q=80",
+    features: [
+      { icon: "crown", text: "AI assistant and premium perks" },
+      { icon: "rocket", text: "Early access to new releases" },
+      { icon: "users", text: "Exclusive author events and webinars" },
+    ],
+    includedFeatureIds: [
+      "basic-formats",
+      "extended-formats",
+      "extra-formats",
+      "users-8",
+      "cloud-100gb",
+      "audiobooks",
+      "offline",
+      "sync",
+      "bookmarks",
+      "collections",
+      "translator",
+      "ai-assistant",
+      "priority-support",
+      "early-access",
+      "webinars",
+      "converter",
+    ],
+  },
+];

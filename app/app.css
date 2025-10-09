@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #f7f5f2;
+  --color-surface: #ffffff;
+  --color-muted: #e9e6df;
+  --color-text: #222222;
+
+  --color-primary: #2b4f6f;
+  --color-primary-600: #203f52;
+  --color-accent: #b86b3a;
+  --color-secondary: #8a6e51;
+
+  --color-success: #288c64;
+  --color-error: #c43d3d;
+
+  --animate-slide-down: slide-down 0.3s cubic-bezier(0.87, 0, 0.13, 1);
+  @keyframes slide-down {
+    0% {
+      height: 0;
+    }
+    100% {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  --animate-slide-up: slide-up 0.3s cubic-bezier(0.87, 0, 0.13, 1);
+  @keyframes slide-up {
+    0% {
+      height: var(--radix-accordion-content-height);
+    }
+    100% {
+      height: 0;
+    }
+  }
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: var(--base-line-height);
+  }
+
+  h1,
+  .h1 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+  }
+  h2,
+  .h2 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+  }
+  h3,
+  .h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    transition:
+      transform 0.12s ease,
+      box-shadow 0.12s ease,
+      background-color 0.12s ease;
+    user-select: none;
+  }
+
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    background-color: var(--color-primary-600);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+    cursor: pointer;
+  }
+  .btn-outline:hover {
+    background: color-mix(in oklab, var(--color-white) 30%, transparent);
+  }
+
+  .btn[disabled],
+  .btn.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: default;
+  }
+}
+
+@layer utilities {
+  .summary-scroll {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+  }
+}
