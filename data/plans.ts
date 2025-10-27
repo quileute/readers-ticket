@@ -6,8 +6,7 @@ export const plans: Plan[] = [
     name: "Reader",
     price: 9,
     description: "For occasional readers who enjoy a few books per month.",
-    image:
-      "https://images.unsplash.com/photo-1613931411023-7b2c1c973425?auto=format&fit=crop&w=800&q=80",
+    image: "boy-reading.avif",
     features: [
       { icon: "book-heart", text: "A gentle start into digital reading" },
       { icon: "notebook-pen", text: "Keep notes and highlights together" },
@@ -27,8 +26,7 @@ export const plans: Plan[] = [
     name: "Bookworm",
     price: 19,
     description: "Perfect for book lovers who can't stop reading.",
-    image:
-      "https://images.unsplash.com/photo-1741158672093-38fe55d84071?auto=format&fit=crop&w=800&q=80",
+    image: "girl-with-dog.avif",
     features: [
       { icon: "book-open", text: "Shared library for the whole family" },
       { icon: "book-image", text: "Comics, manga and illustrated tales" },
@@ -53,8 +51,7 @@ export const plans: Plan[] = [
     name: "Bibliophile",
     price: 29,
     description: "Unlimited access for true book devotees.",
-    image:
-      "https://images.unsplash.com/photo-1754430543609-aae159c530ef?auto=format&fit=crop&w=800&q=80",
+    image: "library-visitor.avif",
     features: [
       { icon: "crown", text: "AI assistant and premium perks" },
       { icon: "rocket", text: "Early access to new releases" },

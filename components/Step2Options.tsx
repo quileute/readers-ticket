@@ -17,7 +17,7 @@ export default function Step2Options() {
       const t = setTimeout(() => router.push("/plans"), 1000);
       return () => clearTimeout(t);
     }
-  }, []);
+  });
 
   const formats = features.filter((f) => f.category === "Formats");
   const users = features.filter((f) => f.category === "Users");
@@ -26,7 +26,7 @@ export default function Step2Options() {
     (f) => !specialCategories.includes(f.category),
   );
 
-  return !!plan ? (
+  return plan ? (
     <div className="grid gap-8 sm:grid-cols-2">
       <div className="space-y-6 rounded-xl border border-gray-200 bg-white/30 p-6 shadow-sm">
         <OptionsGroup title="Formats" features={formats} plan={plan} />

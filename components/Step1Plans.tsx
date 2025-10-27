@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import useReadersStore from "@/store/useReadersStore";
 import Image from "next/image";
+import { PlanFeature } from "@/types";
 
 function getIcon(name?: string) {
   if (!name) return null;
@@ -67,8 +68,9 @@ export default function Step1Plans() {
             <div className="h-40 bg-gray-200">
               <Image
                 src={
-                  plan.image ||
-                  "https://source.unsplash.com/600x400/?books,library"
+                  plan.image
+                    ? `/images/${plan.image}`
+                    : "https://source.unsplash.com/600x400/?books,library"
                 }
                 alt={plan.name}
                 width={600}
@@ -82,7 +84,7 @@ export default function Step1Plans() {
               <p className="mt-5 text-left text-gray-600">{plan.description}</p>
 
               <ul className="mt-4 space-y-2 text-sm">
-                {plan.features.map((f: any, i: number) => {
+                {plan.features.map((f: PlanFeature, i: number) => {
                   return (
                     <li key={i} className="flex items-start gap-3">
                       <span className="">{getIcon(f.icon)}</span>

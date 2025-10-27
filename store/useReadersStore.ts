@@ -2,8 +2,9 @@ import { create } from "zustand";
 import { plans } from "@/data/plans";
 import { features } from "@/data/features";
 import type { FAQItem, Feature, Plan } from "@/types";
+import { exclusiveCategories } from "@/utils";
 
-type State = {
+export type State = {
   plans: Plan[];
   features: Feature[];
   faqItems: FAQItem[];
@@ -13,12 +14,7 @@ type State = {
 
   setData: (plans: Plan[], features: Feature[], faq: FAQItem[]) => void;
   selectPlan: (id: string | null) => void;
-  setExtraFeatureIds: (ids: string[]) => void;
-  toggleFeature: (
-    id: string,
-    plan: Plan,
-    exclusiveFeatureIds?: string[],
-  ) => void;
+  toggleFeature: (id: string) => void;
   reset: () => void;
   total: () => number;
   requestPrint: () => void;
@@ -41,27 +37,86 @@ const useReadersStore = create<State>((set, get) => ({
       printRequestId: 0,
     }),
 
-  setExtraFeatureIds: (ids) => set({ extraFeatureIds: ids }),
-
-  toggleFeature: (featureId, plan, exclusiveFeatureIds) =>
+  toggleFeature: (featureId: string) =>
     set((state) => {
-      const extraWithoutExclusiveAndMe = exclusiveFeatureIds
-        ? state.extraFeatureIds.filter(
-            (id) => !exclusiveFeatureIds.includes(id),
-          )
-        : state.extraFeatureIds.filter((id) => id !== featureId);
-      // included feature is selected: remove all exclusive extras
-      if (plan.includedFeatureIds.includes(featureId)) {
-        return {
-          extraFeatureIds: extraWithoutExclusiveAndMe,
-        };
+      if (!state.selectedPlanId) return state;
+
+      // find current plan and feature
+      const plan = state.plans.find((p) => p.id === state.selectedPlanId);
+      const feature = state.features.find((f) => f.id === featureId);
+
+      if (!plan || !feature) return state;
+
+      // check if feature is from exclusive category
+      const isExclusive = exclusiveCategories.includes(feature.category);
+
+      if (isExclusive) {
+        // find all features from category
+        const categoryFeatures = state.features
+          .filter((f) => f.category === feature.category)
+          .sort((a, b) => a.price - b.price); // Сортируем по цене
+        const categoryFeatureIds = categoryFeatures.map((f) => f.id);
+
+        // remove all category features from extras
+        const newExtraWithoutCategory = state.extraFeatureIds.filter(
+          (id) => !categoryFeatureIds.includes(id),
+        );
+
+        // if clicked on included feature
+        if (plan.includedFeatureIds.includes(featureId)) {
+          return { extraFeatureIds: newExtraWithoutCategory };
+        }
+        // if clicked on extra feature
+        else {
+          // check if selected feature is above included
+          const includedFeatureInCategory = categoryFeatures.find((f) =>
+            plan.includedFeatureIds.includes(f.id),
+          );
+
+          if (includedFeatureInCategory) {
+            const includedIndex = categoryFeatures.indexOf(
+              includedFeatureInCategory,
+            );
+            const clickedIndex = categoryFeatures.findIndex(
+              (f) => f.id === featureId,
+            );
+
+            if (clickedIndex < includedIndex) {
+              return state;
+            }
+          }
+
+          const wasOn = state.extraFeatureIds.includes(featureId);
+          if (wasOn) {
+            return { extraFeatureIds: newExtraWithoutCategory };
+          } else {
+            return {
+              extraFeatureIds: [...newExtraWithoutCategory, featureId],
+            };
+          }
+        }
       }
-      const isFeatureOn = state.extraFeatureIds.includes(featureId);
-      return {
-        extraFeatureIds: isFeatureOn
-          ? extraWithoutExclusiveAndMe
-          : [...extraWithoutExclusiveAndMe, featureId],
-      };
+      // not exclusive feature
+      else {
+        // feature is already is included in plan
+        if (plan.includedFeatureIds.includes(featureId)) {
+          return state;
+        }
+
+        // toggle ordinary feature
+        const isFeatureOn = state.extraFeatureIds.includes(featureId);
+        if (isFeatureOn) {
+          return {
+            extraFeatureIds: state.extraFeatureIds.filter(
+              (id) => id !== featureId,
+            ),
+          };
+        } else {
+          return {
+            extraFeatureIds: [...state.extraFeatureIds, featureId],
+          };
+        }
+      }
     }),
 
   reset: () =>

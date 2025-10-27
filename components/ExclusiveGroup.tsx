@@ -37,13 +37,7 @@ export default function ExclusiveGroup({
       <h3 className="mb-4 text-lg font-bold">{title}</h3>
       <RadioGroup.Root
         value={activeId}
-        onValueChange={(id) =>
-          toggleFeature(
-            id,
-            plan,
-            exclusiveFeatures.map((f) => f.id),
-          )
-        }
+        onValueChange={(id) => toggleFeature(id)}
         className="flex flex-wrap gap-2"
       >
         {visibleFeatures.map((f) => {

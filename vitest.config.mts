@@ -11,6 +11,8 @@ export default defineConfig({
     include: [
       "app/**/*.{test,spec}.{ts,tsx}",
       "components/**/*.{test,spec}.{ts,tsx}",
+      "utils/**/*.{test,spec}.{ts,tsx}",
+      "store/**/*.{test,spec}.{ts,tsx}",
     ],
     exclude: [
       "node_modules",

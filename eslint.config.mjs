@@ -1,30 +1,78 @@
-import nextPlugin from "@next/eslint-plugin-next";
-import tseslint from "@typescript-eslint/eslint-plugin";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
+import js from "@eslint/js";
+import typescript from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
+import globals from "globals";
 
-export default [
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+const eslintConfig = [
+  js.configs.recommended,
+
   {
-    ignores: ["**/node_modules/**", ".next/**", "dist/**"],
-  },
-  {
-    files: ["**/*.{js,jsx,ts,tsx}"],
+    files: ["**/*.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
-      parserOptions: { ecmaVersion: 2020, sourceType: "module" },
     },
     plugins: {
-      "@typescript-eslint": tseslint,
-      "@next/next": nextPlugin,
+      "@typescript-eslint": typescript,
     },
     rules: {
-      ...nextPlugin.configs["core-web-vitals"].rules,
+      ...typescript.configs.recommended.rules,
       "@typescript-eslint/no-unused-vars": [
         "warn",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
-      "react-hooks/exhaustive-deps": "off",
-      "no-console": "off",
-      "@next/next/no-img-element": "off",
     },
   },
+
+  ...compat.extends("next/core-web-vitals"),
+
+  {
+    rules: {
+      "react-hooks/exhaustive-deps": "warn",
+      "@next/next/no-img-element": "warn",
+    },
+  },
+
+  {
+    files: ["**/*.test.{ts,tsx}", "**/*.spec.{ts,tsx}"],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+        vi: "readonly",
+      },
+    },
+  },
+
+  {
+    files: ["e2e/**/*.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        page: "readonly",
+        test: "readonly",
+        expect: "readonly",
+      },
+    },
+  },
+
+  {
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
+  },
 ];
+
+export default eslintConfig;

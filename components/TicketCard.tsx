@@ -3,6 +3,7 @@
 import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import useReadersStore from "@/store/useReadersStore";
 import type { Feature } from "@/types";
 import { isExclusiveUpgraded } from "@/utils";
@@ -27,20 +28,24 @@ export default function TicketCard() {
 
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const newErrors: { name?: string; email?: string } = {};
-
     if (!name.trim()) {
       newErrors.name = "Name is required";
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       newErrors.email = "Please enter a valid email";
     }
-
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
-  };
+  }, [name, email]);
+
+  useEffect(() => {
+    if (!plan) {
+      const t = setTimeout(() => router.push("/plans"), 1000);
+      return () => clearTimeout(t);
+    }
+  });
 
   const handlePrint = useReactToPrint({
     contentRef: ref,
@@ -54,11 +59,11 @@ export default function TicketCard() {
   });
 
   useEffect(() => {
-    if (!plan) {
-      const t = setTimeout(() => router.push("/plans"), 1000);
-      return () => clearTimeout(t);
+    if (printRequestId > 0) {
+      handlePrint();
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [printRequestId]);
 
   const isIncludedHidden = useCallback(isExclusiveUpgraded, [
     features,
@@ -110,13 +115,7 @@ export default function TicketCard() {
     });
   }, [includedFeatures, extraFeatures]);
 
-  useEffect(() => {
-    if (printRequestId > 0) {
-      handlePrint();
-    }
-  }, [printRequestId]);
-
-  return !!plan ? (
+  return plan ? (
     <div
       ref={ref}
       className="print:bg-bg print:flex print:h-screen print:items-center print:justify-center"
@@ -135,7 +134,7 @@ export default function TicketCard() {
               <input
                 type="text"
                 className="focus:border-primary min-w-0 flex-1 border-b border-dotted border-gray-400 bg-transparent px-1 py-1 font-semibold text-gray-600 placeholder-gray-400 focus:outline-none print:placeholder-transparent"
-                placeholder="type your name"
+                placeholder="Walter Scott"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -151,7 +150,7 @@ export default function TicketCard() {
               <input
                 type="email"
                 className="focus:border-primary min-w-0 flex-1 border-b border-dotted border-gray-400 bg-transparent px-1 py-1 font-semibold text-gray-600 placeholder-gray-400 focus:outline-none print:placeholder-transparent"
-                placeholder="type your email"
+                placeholder="walter.scott@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -204,12 +203,18 @@ export default function TicketCard() {
           </div>
 
           <div className="flex-shrink-0">
-            <img
+            {/* <img
               src="/images/books1_small.png"
               alt="Bookstack"
               width={140}
               height={97}
               className=""
+            /> */}
+            <Image
+              src="/images/books1_small.png"
+              alt="Bookstack"
+              width={140}
+              height={97}
             />
           </div>
         </div>

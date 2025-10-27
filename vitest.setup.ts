@@ -2,12 +2,22 @@ import "@testing-library/jest-dom";
 import { vi } from "vitest";
 import React from "react";
 
-// Mock next/image to simple <img /> for jsdom tests
 vi.mock("next/image", () => {
   return {
     __esModule: true,
-    default: (props: any) => {
-      return React.createElement("img", props);
+    default: (props: Record<string, unknown>) => {
+      return React.createElement("img", { ...props });
     },
   };
 });
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+  }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => "/",
+}));

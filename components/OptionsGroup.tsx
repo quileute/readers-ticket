@@ -32,7 +32,7 @@ export default function OptionsGroup({
                 <Checkbox.Root
                   checked={isIncluded || checked}
                   disabled={isIncluded}
-                  onCheckedChange={() => toggleFeature(f.id, plan)}
+                  onCheckedChange={() => toggleFeature(f.id)}
                   className="data-[state=checked]:bg-primary data-[state=checked]:border-primary flex h-5 w-5 shrink-0 items-center justify-center rounded border border-gray-400 data-[disabled]:!border-gray-500 data-[disabled]:!bg-gray-500"
                 >
                   <Checkbox.Indicator>
